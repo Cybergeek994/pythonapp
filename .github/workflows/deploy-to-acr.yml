@@ -1,0 +1,31 @@
+name: Deploy to ACR
+
+on:
+  push:
+    branches:
+      - master # Change this to your main branch name if it's different
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Log in to ACR
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.ACR_URL }}
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    - name: Build and push Docker image
+      uses: azure/docker@v1
+      with:
+        context: .
+        dockerfile: Dockerfile
+        image: ${{ secrets.ACR_URL }}/<image-name>:${{ github.sha }}
+
+    - name: Logout of ACR
+      run: docker logout ${{ secrets.ACR_URL }}
