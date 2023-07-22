@@ -30,10 +30,10 @@ jobs:
 
     - name: 
       uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'samplepythondev'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          images: ${{ secrets.ACR_URL }}/my-python-app:${{ github.sha }}
+      with:
+        app-name: 'samplepythondev'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        images: ${{ secrets.ACR_URL }}/my-python-app:${{ github.sha }}
     
     - name: Logout of ACR
       run: docker logout ${{ secrets.ACR_URL }}
